@@ -15,8 +15,9 @@ jobs:
 
       - name: Run Python Script
         run: |
-          chmod +x .git/hooks/pre-push
-          ./pre-push
+          pwd
+          chmod +x ./pre-push
+          ./pre-push.py
           exit_code=$?
 
           if [ $exit_code -eq 0 ]; then
