@@ -1,0 +1,28 @@
+name: Pre-push Check
+
+on:
+  push:
+    branches:
+      - main  # Adjust the branch name as needed
+
+jobs:
+  pre-push-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Run Python Script
+        run: |
+          chmod +x .git/hooks/pre-push
+          ./pre-push
+          exit_code=$?
+
+          if [ $exit_code -eq 0 ]; then
+            echo "Pre-push check passed. Integration allowed."
+            # Continue with your regular build and test steps here
+          else
+            echo "Pre-push check failed. Integration blocked."
+            exit 1
+          fi
