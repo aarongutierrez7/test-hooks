@@ -24,13 +24,13 @@ jobs:
         run: |
           CURRENT_COMMIT=$(git rev-parse HEAD)
           echo "Current Commit: $CURRENT_COMMIT"
-          echo "::set-env name=CURRENT_COMMIT::$CURRENT_COMMIT"
+          echo "::set-output name=commit_hash::$CURRENT_COMMIT"
       
       - name: Show Modified Files
         run: |
           git log --name-only --pretty=format: $CURRENT_COMMIT -1 > modified_files.txt
           cat modified_files.txt
-          echo "::set-env name=MODIFIED_FILES::$(cat modified_files.txt)"
+          echo "::set-output name=MODIFIED_FILES::$(cat modified_files.txt)"
 
       - name: Use Modified Files in Subsequent Steps
         run: |
