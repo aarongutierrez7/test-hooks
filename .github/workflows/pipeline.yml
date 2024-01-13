@@ -18,11 +18,18 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11.2'
-      - name: Run diff command
+      - name: Get Previous Commit
         run: |
-          git diff --name-only HEAD^ HEAD > modified_files.txt
+          PREVIOUS_COMMIT=$(git rev-parse HEAD^)
+          echo "Previous Commit: $PREVIOUS_COMMIT"
+          echo "::set-env name=PREVIOUS_COMMIT::$PREVIOUS_COMMIT"
+  
+      - name: Show Modified Files
+        run: |
+          git diff --name-only $PREVIOUS_COMMIT ${{ github.sha }} > modified_files.txt
           cat modified_files.txt
           echo "::set-env name=MODIFIED_FILES::$(cat modified_files.txt)"
+          
       - name: Use Modified Files in Subsequent Steps
         run: |
           echo "Modified Files: $MODIFIED_FILES"
