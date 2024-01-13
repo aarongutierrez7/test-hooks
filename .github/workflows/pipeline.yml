@@ -17,18 +17,10 @@ jobs:
       #- name: Setup Python
       #  uses: actions/setup-python@v5
       #  with:
-      #    python-version: '3.11.2'
-        
-  
-      - name: Get Current Commit
-        run: |
-          CURRENT_COMMIT=$(git rev-parse HEAD)
-          echo "Current Commit: $CURRENT_COMMIT"
-          echo "::set-output name=commit_hash::$CURRENT_COMMIT"
-      
+      #    python-version: '3.11.2'    
       - name: Show Modified Files
         run: |
-          git log --name-only --pretty=format: $CURRENT_COMMIT -1 > modified_files.txt
+          git diff --name-only ${{ github.event.before }} ${{ github.sha }} > modified_files.txt
           cat modified_files.txt
           echo "::set-output name=MODIFIED_FILES::$(cat modified_files.txt)"
 
