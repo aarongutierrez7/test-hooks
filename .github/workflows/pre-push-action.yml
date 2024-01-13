@@ -16,7 +16,7 @@ jobs:
       - name: Run Python Script
         run: |
           pwd
-          chmod +x ./pre-push
+          chmod +x ./pre-push.py
           ./pre-push.py
           exit_code=$?
 
