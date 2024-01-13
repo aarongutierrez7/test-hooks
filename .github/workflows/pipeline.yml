@@ -1,9 +1,9 @@
-name: Run Python Script
+name: Run git diff
 
 on:
   push:
     branches:
-      - main  # Adjust the branch name as needed
+      - master
 
 jobs:
   run-python-script:
