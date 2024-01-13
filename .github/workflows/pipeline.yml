@@ -19,4 +19,4 @@ jobs:
         with:
           python-version: '3.11.2'
       - name: Run diff command
-        run: git diff --stat --cached origin/master
+        run: echo "$(git diff --stat --cached origin/master)"
