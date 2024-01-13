@@ -3,7 +3,7 @@ name: Pre-push Check
 on:
   push:
     branches:
-      - main  # Adjust the branch name as needed
+      - master  # Adjust the branch name as needed
 
 jobs:
   pre-push-check:
