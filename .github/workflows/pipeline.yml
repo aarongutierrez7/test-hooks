@@ -19,4 +19,9 @@ jobs:
         with:
           python-version: '3.11.2'
       - name: Run diff command
-        run: echo "$(git diff --stat --cached origin/master)"
+        run: |
+          git diff --name-only ${{ github.event.before }} ${{ github.sha }} > modified_files.txt
+          cat modified_files.txt
+          echo "::set-env name=MODIFIED_FILES::$(cat modified_files.txt)"
+          
+#echo "$(git diff --stat --cached origin/master)"
