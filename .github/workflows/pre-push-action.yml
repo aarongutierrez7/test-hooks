@@ -15,6 +15,9 @@ jobs:
         with:
           ref: master  # Adjust the branch name as needed
 
+      - name: Set Working Directory
+        run: cd $GITHUB_WORKSPACE
+        
       - name: Make Script Executable
         run: chmod +x pre-push.py
 
