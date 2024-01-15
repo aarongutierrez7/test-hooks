@@ -1,31 +1,28 @@
-name: Run git diff
+name: Merge Check
 
 on:
-  push:
-    branches:
-      - master
+  pull_request:
+    types:
+      - synchronize
+      - opened
+      - reopened
 
 jobs:
-  run-python-script:
+  merge-check:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
-        with:
-          ref: master
-      #- name: Setup Python
-      #  uses: actions/setup-python@v5
-      #  with:
-      #    python-version: '3.11.2'    
-      - name: Show Modified Files
-        run: |
-          git diff --name-only ${{ github.event.before }} ${{ github.sha }} > modified_files.txt
-          cat modified_files.txt
-          echo "::set-output name=MODIFIED_FILES::$(cat modified_files.txt)"
+        uses: actions/checkout@v2
 
-      - name: Use Modified Files in Subsequent Steps
+      - name: Run Merge Check
         run: |
-          echo "Modified Files: $MODIFIED_FILES"
-          
-#echo "$(git diff --stat --cached origin/master)"
+          files_changed=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+
+          if echo "$files_changed" | grep -qE '^(file1.txt|file2.txt|file3.txt)$'; then
+            echo "All required files have been modified. Allow the merge."
+            exit 0
+          else
+            echo "Error: Only allow merges when modifying file1.txt, file2.txt, and file3.txt simultaneously."
+            exit 1
+          fi
