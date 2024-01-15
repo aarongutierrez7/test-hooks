@@ -13,11 +13,11 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Run Merge Check
         run: |
-          files_changed=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+          files_changed=$(git diff --name-only origin/${{ github.event.before }}...${{ github.sha }})
 
           if echo "$files_changed" | grep -qE '^(file1.txt|file2.txt|file3.txt)$'; then
             echo "All required files have been modified. Allow the merge."
