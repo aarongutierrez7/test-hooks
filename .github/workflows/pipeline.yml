@@ -13,16 +13,20 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Run Merge Check
         run: |
-          files_changed=$(git diff --name-only origin/${{ github.event.before }}...${{ github.sha }})
+          files_changed=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
 
           if echo "$files_changed" | grep -qE '^(file1.txt|file2.txt|file3.txt)$'; then
             echo "All required files have been modified. Allow the merge."
             exit 0
           else
             echo "Error: Only allow merges when modifying file1.txt, file2.txt, and file3.txt simultaneously."
+            echo "Changed files in this pull request:"
+            echo "$files_changed"
             exit 1
           fi
